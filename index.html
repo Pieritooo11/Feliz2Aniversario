@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>felz 2 años princesita</title> 
+    <link rel="stylesheet" href="style.css"> 
+
+    <!-- Fuente bonita -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Texto fijo que late */
+        #date-visual {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            font-size: 50px;
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            color: rgba(255, 0, 0, 0.85);
+            transition: transform 0.05s linear;
+            z-index: 9999; /* Siempre encima de todo */
+            pointer-events: none;
+        }
+    </style>
+</head> 
+<body> 
+<video id="background-video" autoplay loop muted> 
+    <source src="video.mp4" type="video/mp4"> 
+</video> 
+
+<!-- 🎵 Música -->
+<audio id="audioPlayer" src="assets/musica.mp3" loop></audio>
+
+<!-- Texto fijo en pantalla -->
+<div id="date-visual">♡</div>
+
+<div id="book" class="book"> 
+    <div class="spiral"></div> 
+    <div class="back-cover"></div> 
+
+    <div id="p1" class="paper"> 
+        <div class="front"> 
+            <div id="f1" class="front-content"> 
+                <div class="page-main-content"> 
+                    <h1>Feliz 2 Años Mi Niña ♡</h1> 
+                    <p>Hemos pasado tantas cositas alrededor de estos 2 años mi vida, altos y bajos, pero siempre juntitos mi amor ♡</p> 
+                    <img src="f1.png" alt="Portada" class="cover-image"> 
+                </div> 
+                <button class="next-btn">Toca :3 &rarr;</button> 
+            </div> 
+        </div> 
+        <div class="back"> 
+            <div id="b1" class="back-content"> 
+                <div class="page-main-content"> 
+                    <h2>Aún recuerdo ls primera noche ✨</h2> 
+                    <p>Pareciamos 2 loquitos saltanto en la llantita jiji :3 quien diria q nos enamorariamos para chempre ♡, amo cada parte de ti mi niña :'), estoy profundamente enamorado de ti.
+                    Ete es nuestra primera fotito y mi primer dibujito para ti :3</p> 
+                </div> 
+                <button class="prev-btn">&larr; pa atras</button> 
+            </div> 
+        </div> 
+    </div> 
+
+    <div id="p2" class="paper"> 
+        <div class="front"> 
+            <div id="f2" class="front-content"> 
+                <div class="page-main-content"> 
+                    <img src="f2.png" alt="Imagen de amor 1" class="page-image"> 
+                </div> 
+                <button class="next-btn">sigue bb &rarr;</button> 
+            </div> 
+        </div> 
+        <div class="back"> 
+            <div id="b2" class="back-content"> 
+                <div class="page-main-content"> 
+                    <img src="f3.png" alt="Imagen de amor 2" class="page-image"> 
+                </div> 
+                <button class="prev-btn">&larr; pa atras</button> 
+            </div> 
+        </div> 
+    </div> 
+
+    <div id="p3" class="paper"> 
+        <div class="front"> 
+            <div id="f3" class="front-content"> 
+                <div class="page-main-content"> 
+                    <h2>Lo que Amo de Ti 🥰</h2> 
+                   <p>Amo tus ojos, tu inteligencia, tu lealtad :( eres el amor de mi vida weona no tengo un futuro sin mi taly :'), amo q eres una mujer fuerte ante todo, eres mi ejemplo a seguir, amo q seas mi mujer ♡.</p> 
+                </div> 
+                <button class="next-btn">sigue bb &rarr;</button> 
+            </div> 
+        </div> 
+        <div class="back"> 
+            <div id="b3" class="back-content"> 
+                <div class="page-main-content"> 
+                    <h1>Eres mi Todo</h1> 
+                    <p>Gracias por llegar a mi vida y hacerme tan feliz mi niña, ya veras q todo nos saldra bien para estar juntos, lograr nuestras metas y seguir soñando en grande, Pierito te adora weona :( ❤️</p> 
+                    <img src="f4.png" alt="Imagen final" class="cover-image"> 
+                </div> 
+                <button class="prev-btn">&larr; Volver</button> 
+            </div> 
+        </div> 
+    </div> 
+</div> 
+
+<script src="script.js"></script> 
+
+<!-- Script música + efecto "11/08" -->
+<script>
+  const audioElement = document.getElementById('audioPlayer');
+  const dateVisual = document.getElementById('date-visual');
+
+  document.body.addEventListener('click', function() {
+    audioElement.play();
+
+    // Inicializamos Web Audio API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioCtx.createMediaElementSource(audioElement);
+    const analyser = audioCtx.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 256;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    function animateDate() {
+      requestAnimationFrame(animateDate);
+      analyser.getByteFrequencyData(dataArray);
+
+      // Usamos frecuencias graves para el "latido"
+      let bass = dataArray.slice(0, 10).reduce((a, b) => a + b) / 10;
+      let scale = 1 + (bass / 255) * 0.4; // Escala 1 a 1.4
+      dateVisual.style.transform = `scale(${scale})`;
+    }
+
+    animateDate();
+  }, { once: true });
+</script>
+
+</body> 
+</html>
